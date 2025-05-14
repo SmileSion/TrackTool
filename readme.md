@@ -15,6 +15,7 @@
   "event_type": "button_click",      // 事件类型：button_click等
   "event_detail": "bszn", 			// 详细事件信息，结构由事件类型决定
   "user_detail": "xxx",				//用户标识
+  "time_stamp": "",
 }
 ```
 
@@ -33,13 +34,21 @@ mysql数据库 **track**
 ```mysql
 CREATE TABLE event_logs (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    timestamp BIGINT,
-    client_type VARCHAR(20),
-    site VARCHAR(100),
-    event_type VARCHAR(50),
-    event_detail VARCHAR(255),  -- 改为 VARCHAR
-    count INT DEFAULT 1,
-    UNIQUE KEY unique_event(client_type, site, event_type, event_detail)
-);
+    timestamp BIGINT NOT NULL,                    -- 每条记录的后端写入时间（按分钟对齐）
+    client_type VARCHAR(20) NOT NULL,
+    site VARCHAR(100) NOT NULL,
+    event_type VARCHAR(50) NOT NULL,
+    event_detail VARCHAR(255) NOT NULL,
+    count INT DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+```
+
+## 前端传入方式
+
+```json
+{
+    "data": "AES加密参数，ECB模式，pkcs7padding"
+}
 ```
 

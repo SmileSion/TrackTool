@@ -21,7 +21,7 @@ func InitRedis(addr string, password string, db int) {
 
 func SaveEventToRedis(event model.Event) error {
 	// 忽略 user_detail 字段
-	event.UserDetail = ""  // 直接清空 user_detail
+	// event.UserDetail = ""  // 直接清空 user_detail
 	event.Timestamp = time.Now().Unix()
 	data, _ := json.Marshal(event)
 	return RDB.RPush(context.Background(), "event_queue", data).Err()

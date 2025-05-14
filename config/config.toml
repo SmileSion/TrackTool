@@ -11,3 +11,6 @@ dsn = "exam:exam123@tcp(192.168.137.2:3306)/track?charset=utf8mb4&parseTime=True
 
 [log]
 filepath = "log/track.log"
+
+[aes]
+key = "87044e7f8df84726b8265a6bda7ae17c"

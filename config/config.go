@@ -22,11 +22,16 @@ type LogConfig struct {
 	Filepath string `toml:"filepath"`
 }
 
+type AESConfig  struct {
+	Key string `toml:"key"` // SM4密钥
+}
+
 type Config struct {
 	Server ServerConfig `toml:"server"`
 	Redis  RedisConfig  `toml:"redis"`
 	Mysql  MysqlConfig  `toml:"mysql"`
 	Log    LogConfig    `toml:"log"`
+	AES    AESConfig    `toml:"aes"`
 }
 
 var Conf Config
