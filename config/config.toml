@@ -1,0 +1,13 @@
+[server]
+port = 9010
+
+[redis]
+addr = "192.168.137.2:6379"
+password = "redis"
+db = 0
+
+[mysql]
+dsn = "exam:exam123@tcp(192.168.137.2:3306)/track?charset=utf8mb4&parseTime=True&loc=Local"
+
+[log]
+filepath = "log/track.log"
