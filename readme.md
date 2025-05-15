@@ -52,3 +52,4 @@ CREATE TABLE event_logs (
 }
 ```
 
+`nohup ./Tracking_tool-linux-amd64 > ./run.log 2>&1 &`
