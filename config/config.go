@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/BurntSushi/toml"
+	"log"
 )
 
 type ServerConfig struct {
@@ -40,4 +41,11 @@ func InitConfig() {
 	if _, err := toml.DecodeFile("config/config.toml", &Conf); err != nil {
 		panic(err)
 	}
+	// ✅ 打印初始化日志
+	log.Println("配置文件加载成功：")
+	log.Printf("  Server Port: %d\n", Conf.Server.Port)
+	log.Printf("  Redis Addr: %s, DB: %d\n", Conf.Redis.Addr, Conf.Redis.DB)
+	log.Printf("  MySQL DSN: %s\n", Conf.Mysql.DSN)
+	log.Printf("  Log File: %s\n", Conf.Log.Filepath)
+	log.Printf("  AES Key: %s\n", Conf.AES.Key)
 }

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 	"time"
+	"log"
 
 	"github.com/qwy-tacking/middleware"
 	"github.com/qwy-tacking/model"
@@ -20,7 +21,7 @@ func InitMySQL(dsn string) {
 	if err != nil {
 		panic("MySQL连接失败: " + err.Error())
 	}
-
+	log.Printf("  InitMySQL DSN: %s\n", dsn)
 	// 验证连接是否成功
 	if err = DB.Ping(); err != nil {
 		panic("MySQL Ping失败: " + err.Error())
