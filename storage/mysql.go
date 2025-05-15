@@ -3,13 +3,13 @@ package storage
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"strings"
 	"time"
-	"log"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/qwy-tacking/middleware"
 	"github.com/qwy-tacking/model"
-	_ "github.com/go-sql-driver/mysql"
 )
 
 var DB *sql.DB
@@ -36,7 +36,7 @@ func InsertEvents(events []model.Event) error {
 
 	for _, e := range events {
 		key := fmt.Sprintf("%s:%s:%s:%s", e.ClientType, e.Site, e.EventType, e.EventDetail)
-		eventCountMap[key]++
+		eventCountMap[key] += e.Count
 	}
 
 	stmt, err := DB.Prepare(`
@@ -68,4 +68,3 @@ func InsertEvents(events []model.Event) error {
 
 	return nil
 }
-

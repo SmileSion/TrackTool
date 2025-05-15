@@ -3,8 +3,9 @@ package storage
 import (
 	"context"
 	"encoding/json"
-	"github.com/qwy-tacking/model"
 	"time"
+
+	"github.com/qwy-tacking/model"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -20,23 +21,28 @@ func InitRedis(addr string, password string, db int) {
 }
 
 func SaveEventToRedis(event model.Event) error {
-	// 忽略 user_detail 字段
-	// event.UserDetail = ""  // 直接清空 user_detail
-	event.Timestamp = time.Now().Unix()
+	event.TimeStamp = time.Now().Unix()
+	if event.Count == 0 {
+		event.Count = 1 // 默认计数为1
+	}
 	data, _ := json.Marshal(event)
 	return RDB.RPush(context.Background(), "event_queue", data).Err()
 }
 
-func PopAllEvents() []model.Event {
+func PopNEvents(n int) []model.Event {
 	ctx := context.Background()
-	vals, _ := RDB.LRange(ctx, "event_queue", 0, -1).Result()
-	RDB.Del(ctx, "event_queue")
+
+	vals, err := RDB.LPopCount(ctx, "event_queue", n).Result()
+	if err != nil || len(vals) == 0 {
+		return nil
+	}
 
 	var result []model.Event
 	for _, v := range vals {
 		var e model.Event
-		json.Unmarshal([]byte(v), &e)
-		result = append(result, e)
+		if err := json.Unmarshal([]byte(v), &e); err == nil {
+			result = append(result, e)
+		}
 	}
 	return result
 }

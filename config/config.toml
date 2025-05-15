@@ -1,5 +1,5 @@
 [server]
-port = 9010
+port = 9011
 
 [redis]
 addr = "192.168.137.2:6379"
@@ -11,6 +11,15 @@ dsn = "exam:exam123@tcp(192.168.137.2:3306)/track?charset=utf8mb4&parseTime=True
 
 [log]
 filepath = "log/track.log"
+max_size = 50       # 单个文件最大大小（MB）
+max_backups = 10    # 最多保留旧文件数
+max_age = 7         # 最多保留天数
+compress = true     # 是否压缩
 
 [aes]
-key = "87044e7f8df84726b8265a6bda7ae17c"
+key = "87044e7f8df84726b8265a6bda7ae17c"  #AES密钥
+
+[cap]
+chan = 1000
+worker = 5
+batch = 200

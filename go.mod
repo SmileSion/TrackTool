@@ -8,6 +8,7 @@ require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-sql-driver/mysql v1.9.2
 	github.com/redis/go-redis/v9 v9.8.0
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 )
 
 require (

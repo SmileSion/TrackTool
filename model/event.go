@@ -9,5 +9,6 @@ type Event struct {
 	UserDetail  string `json:"userDetail"`
 	Timestamp   int64  `json:"timestamp"`    // 后端生成的时间戳
 	TimeStamp   int64  `json:"timeStamp"`   // 前端传入的时间戳（用于校验，仅存入Redis）
+	Count       int    `json:"count"`  // 新增字段，用于聚合计数
 }
 

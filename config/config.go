@@ -21,10 +21,20 @@ type MysqlConfig struct {
 
 type LogConfig struct {
 	Filepath string `toml:"filepath"`
+	MaxSize    int    `toml:"max_size"`
+	MaxBackups int    `toml:"max_backups"`
+	MaxAge     int    `toml:"max_age"`
+	Compress   bool   `toml:"compress"`
 }
 
 type AESConfig  struct {
-	Key string `toml:"key"` // SM4密钥
+	Key string `toml:"key"` // AES密钥
+}
+
+type Capability  struct {
+	Chan int `toml:"chan"`
+	Worker int `toml:"worker"`
+	Batch int `toml:"batch"`
 }
 
 type Config struct {
@@ -33,6 +43,7 @@ type Config struct {
 	Mysql  MysqlConfig  `toml:"mysql"`
 	Log    LogConfig    `toml:"log"`
 	AES    AESConfig    `toml:"aes"`
+	Cap    Capability    `toml:"cap"`
 }
 
 var Conf Config
