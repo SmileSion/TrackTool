@@ -41,6 +41,9 @@ func main() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
+	// 先设置运行模式
+	gin.SetMode(gin.ReleaseMode)
+
 	// 初始化 Gin 引擎
 	r := gin.Default()
 
