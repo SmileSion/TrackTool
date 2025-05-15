@@ -1,0 +1,12 @@
+[Track] 2025/05/15 10:03:01 MySQL连接成功
+[Track] 2025/05/15 10:03:18 收到事件: {ClientType:web Site:/page EventType:button_click EventDetail:zxbl_6100000000 UserDetail:18918399562 Timestamp:0 TimeStamp:1747274598}
+[Track] 2025/05/15 10:03:19 收到事件: {ClientType:web Site:/page EventType:button_click EventDetail:zxbl_6100000000 UserDetail:18918399562 Timestamp:0 TimeStamp:1747274599}
+[Track] 2025/05/15 10:03:20 收到事件: {ClientType:web Site:/page EventType:button_click EventDetail:zxbl_6100000000 UserDetail:18918399562 Timestamp:0 TimeStamp:1747274600}
+[Track] 2025/05/15 10:03:26 收到事件: {ClientType:web Site:/page EventType:button_click EventDetail:zxbl_6100000003 UserDetail:18918399562 Timestamp:0 TimeStamp:1747274606}
+[Track] 2025/05/15 10:03:27 收到事件: {ClientType:web Site:/page EventType:button_click EventDetail:zxbl_6100000003 UserDetail:18918399562 Timestamp:0 TimeStamp:1747274607}
+[Track] 2025/05/15 10:03:27 收到事件: {ClientType:web Site:/page EventType:button_click EventDetail:zxbl_6100000003 UserDetail:18918399562 Timestamp:0 TimeStamp:1747274607}
+[Track] 2025/05/15 10:03:29 收到事件: {ClientType:web Site:/page EventType:button_click EventDetail:zxbl_6100000003 UserDetail:18918399562 Timestamp:0 TimeStamp:1747274609}
+[Track] 2025/05/15 10:03:30 收到事件: {ClientType:web Site:/page EventType:button_click EventDetail:zxbl_6100000003 UserDetail:18918399562 Timestamp:0 TimeStamp:1747274610}
+[Track] 2025/05/15 10:03:31 收到事件: {ClientType:web Site:/page EventType:button_click EventDetail:zxbl_6100000003 UserDetail:18918399562 Timestamp:0 TimeStamp:1747274611}
+[Track] 2025/05/15 10:03:32 收到事件: {ClientType:web Site:/page EventType:button_click EventDetail:zxbl_6100000003 UserDetail:18918399562 Timestamp:0 TimeStamp:1747274612}
+[Track] 2025/05/15 10:04:01 写入MySQL成功：11 条
