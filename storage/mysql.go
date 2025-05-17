@@ -40,7 +40,7 @@ func InsertEvents(events []model.Event) error {
 	}
 
 	stmt, err := DB.Prepare(`
-		INSERT INTO event_logs (timestamp, client_type, site, event_type, event_detail, count)
+		INSERT INTO event_logs (event_time, client_type, site, event_type, event_detail, count)
 		VALUES (?, ?, ?, ?, ?, ?)
 	`)
 	if err != nil {
