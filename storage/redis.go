@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/qwy-tacking/middleware"
 	"github.com/qwy-tacking/model"
 
 	"github.com/redis/go-redis/v9"
@@ -29,20 +30,66 @@ func SaveEventToRedis(event model.Event) error {
 	return RDB.RPush(context.Background(), "event_queue", data).Err()
 }
 
+// func PopNEvents(n int) []model.Event {
+// 	ctx := context.Background()
+// 	middleware.Logger.Printf("尝试取出 %d 个数据",n)
+
+// 	vals, err := RDB.LPopCount(ctx, "event_queue", n).Result()
+// 	if err != nil || len(vals) == 0 {
+// 		middleware.Logger.Printf("redis取出错误 %v",err)
+// 		return nil
+// 	}
+
+//		var result []model.Event
+//		for _, v := range vals {
+//			var e model.Event
+//			if err := json.Unmarshal([]byte(v), &e); err == nil {
+//				middleware.Logger.Printf("反序列化事件出错： %v，原始数据 %s",err,v)
+//				result = append(result, e)
+//			}
+//		}
+//		return result
+//	}
+const lpopCountScript = `
+local count = tonumber(ARGV[1])
+local results = {}
+for i = 1, count do
+    local val = redis.call('LPOP', KEYS[1])
+    if not val then break end
+    table.insert(results, val)
+end
+return results
+`
+
 func PopNEvents(n int) []model.Event {
 	ctx := context.Background()
+	// middleware.Logger.Printf("尝试取出 %d 个数据", n)
 
-	vals, err := RDB.LPopCount(ctx, "event_queue", n).Result()
-	if err != nil || len(vals) == 0 {
+	// 执行 Lua 脚本
+	vals, err := RDB.Eval(ctx, lpopCountScript, []string{"event_queue"}, n).StringSlice()
+	if err != nil {
+		if err == redis.Nil {
+			// middleware.Logger.Println("队列为空")
+		} else {
+			middleware.Logger.Printf("redis取出错误: %v", err)
+		}
+		return nil
+	}
+
+	if len(vals) == 0 {
+		// middleware.Logger.Println("队列为空，没有取出任何数据")
 		return nil
 	}
 
 	var result []model.Event
 	for _, v := range vals {
 		var e model.Event
-		if err := json.Unmarshal([]byte(v), &e); err == nil {
-			result = append(result, e)
+		if err := json.Unmarshal([]byte(v), &e); err != nil {
+			middleware.Logger.Printf("反序列化事件出错: %v，原始数据: %s", err, v)
+			continue
 		}
+		result = append(result, e)
 	}
+	middleware.Logger.Printf("成功取出并反序列化 %d/%d 个事件", len(result), len(vals))
 	return result
 }
