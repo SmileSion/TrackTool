@@ -3,8 +3,8 @@ package controller
 import (
 	"crypto/aes"
 	"encoding/base64"
-	"encoding/json"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -12,7 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/qwy-tacking/config"
-	// "github.com/qwy-tacking/middleware"
+	"github.com/qwy-tacking/middleware"
 	"github.com/qwy-tacking/model"
 	"github.com/qwy-tacking/storage"
 )
@@ -110,6 +110,6 @@ func TrackHandler(c *gin.Context) {
 		return
 	}
 
-	// middleware.Logger.Printf("收到事件: %+v\n", event)
+	middleware.Logger.Printf("收到事件: %+v\n", event)
 	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }
