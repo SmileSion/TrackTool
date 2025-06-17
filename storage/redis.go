@@ -24,11 +24,18 @@ func InitRedis(addr string, password string, db int) {
 func SaveEventToRedis(event model.Event) error {
 	event.TimeStamp = time.Now().Unix()
 	if event.Count == 0 {
-		event.Count = 1 // 默认计数为1
+		event.Count = 1
 	}
 	data, _ := json.Marshal(event)
-	return RDB.RPush(context.Background(), "event_queue", data).Err()
+
+	ctx := context.Background()
+	pipe := RDB.Pipeline()
+	pipe.RPush(ctx, "event_queue_stats", data)
+	pipe.RPush(ctx, "event_queue_detail", data)
+	_, err := pipe.Exec(ctx)
+	return err
 }
+
 
 // func PopNEvents(n int) []model.Event {
 // 	ctx := context.Background()
@@ -66,7 +73,7 @@ func PopNEvents(n int) []model.Event {
 	// middleware.Logger.Printf("尝试取出 %d 个数据", n)
 
 	// 执行 Lua 脚本
-	vals, err := RDB.Eval(ctx, lpopCountScript, []string{"event_queue"}, n).StringSlice()
+	vals, err := RDB.Eval(ctx, lpopCountScript, []string{"event_queue_stats"}, n).StringSlice()
 	if err != nil {
 		if err == redis.Nil {
 			// middleware.Logger.Println("队列为空")
@@ -91,5 +98,21 @@ func PopNEvents(n int) []model.Event {
 		result = append(result, e)
 	}
 	middleware.Logger.Printf("成功取出并反序列化 %d/%d 个事件", len(result), len(vals))
+	return result
+}
+
+func PopNDetailEvents(n int) []model.Event {
+	ctx := context.Background()
+	vals, err := RDB.Eval(ctx, lpopCountScript, []string{"event_queue_detail"}, n).StringSlice()
+	if err != nil || len(vals) == 0 {
+		return nil
+	}
+	var result []model.Event
+	for _, v := range vals {
+		var e model.Event
+		if err := json.Unmarshal([]byte(v), &e); err == nil {
+			result = append(result, e)
+		}
+	}
 	return result
 }

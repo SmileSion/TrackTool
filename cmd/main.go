@@ -36,6 +36,7 @@ func main() {
 
 	// 启动异步处理器（支持退出）
 	service.StartProcessor(ctx, config.Conf.Cap.Worker, config.Conf.Cap.Batch, &wg)
+	service.StartDetailProcessor(ctx, config.Conf.Cap.Worker, config.Conf.Cap.Batch, &wg)
 
 	// 捕获退出信号
 	quit := make(chan os.Signal, 1)
