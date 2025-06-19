@@ -37,8 +37,8 @@ func InitMySQL(dsn string) {
 	middleware.Logger.Println("MySQL连接成功")
 
 	// 启动时检查旧日志表和明细表，若存在则重命名避免冲突
-	checkAndRenameOldTable(logTableName, "event_logs")
-	checkAndRenameOldTable(detailTableName, "event_detail")
+	// checkAndRenameOldTable(logTableName, "event_logs")
+	// checkAndRenameOldTable(detailTableName, "event_detail")
 }
 
 func InsertEvents(events []model.Event) error {
@@ -62,7 +62,7 @@ func InsertEvents(events []model.Event) error {
 	// 每天 0 点切表逻辑
 	if !isSameDate(now, logTableCreateTime) {
 		oldTable := logTableName
-		suffix := logTableCreateTime.Format("20060102")
+		suffix := logTableCreateTime.Format("060102")
 		newName := fmt.Sprintf("event_logs_%s", suffix)
 
 		if err := renameTable(oldTable, newName); err != nil {
@@ -139,7 +139,7 @@ func InsertEventDetails(events []model.Event) error {
 
 	if now.Day() != detailTableCreateTime.Day() {
 		oldTable := detailTableName
-		suffix := detailTableCreateTime.Format("20060102")
+		suffix := detailTableCreateTime.Format("060102")
 		newName := fmt.Sprintf("event_detail_%s", suffix)
 
 		if err := renameTable(oldTable, newName); err != nil {
