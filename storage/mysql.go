@@ -217,16 +217,17 @@ func renameTable(oldName, newName string) error {
 
 func createLogTable(tableName string) error {
 	createSQL := fmt.Sprintf(`
-		CREATE TABLE IF NOT EXISTS %s (
-			id BIGINT NOT NULL AUTO_INCREMENT,
-			event_time BIGINT NOT NULL,
-			client_type VARCHAR(20) NOT NULL,
-			site VARCHAR(100) NOT NULL,
-			event_type VARCHAR(50) NOT NULL,
-			event_detail VARCHAR(255) NOT NULL,
-			count INT DEFAULT '1',
-			PRIMARY KEY (id)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+	CREATE TABLE IF NOT EXISTS %s (
+		id BIGINT NOT NULL AUTO_INCREMENT,
+		event_time BIGINT NOT NULL,
+		client_type VARCHAR(20) NOT NULL,
+		site VARCHAR(100) NOT NULL,
+		event_type VARCHAR(50) NOT NULL,
+		event_detail VARCHAR(255) NOT NULL,
+		count INT DEFAULT '1',
+		PRIMARY KEY (id),
+		KEY idx_event_time_client_type (event_time, client_type)  -- 联合索引
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 	`, tableName)
 
 	_, err := DB.Exec(createSQL)
